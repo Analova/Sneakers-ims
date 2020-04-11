@@ -7,11 +7,17 @@ class ProductController {
 
   store() {}
 
-  create() {}
+  create({ view }) {
+    return view.render("admin/products/create");
+  }
 
-  show() {}
+  show({ view }) {
+    return view.render("admin/products/show");
+  }
+  edit({ view }) {
+    return view.render("admin/products/edit");
+  }
 
-  edit() {}
   update() {}
   delete() {}
 }
