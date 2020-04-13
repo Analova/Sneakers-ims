@@ -1,5 +1,6 @@
 "use strict";
 const Database = use("Database");
+const sanitize = require("sqlstring");
 
 class ProductController {
   index({ view }) {
@@ -12,8 +13,14 @@ class ProductController {
       await Database.raw(
         `INSERT INTO products (title, sku, material,description,
        brand_id, qty,size,user_id)
-       Values("${post.title}", "${post.sku}","${post.material}",
-        "${post.description}" , 3, ${post.qty}, 1, 1)
+       Values(${sanitize.escape(post.title)}, 
+       ${sanitize.escape(post.sku)},
+       ${sanitize.escape(post.material)},
+       ${sanitize.escape(post.description)} ,
+       ${parseInt(3)},
+       ${sanitize.escape(post.qty)},
+       ${sanitize.escape(post.size)}, 
+       ${parseInt(1)})
     `
       );
       return `<h1 style="color:green">Saved success<h1>`;
