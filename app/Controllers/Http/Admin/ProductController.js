@@ -3,11 +3,22 @@ const Database = use("Database");
 const sanitize = require("sqlstring");
 
 class ProductController {
-  index({ view }) {
-    return view.render("admin/products/all");
+  async index({ view, request, response }) {
+    try {
+      let allProducts = await Database.raw(
+        `
+        SELECT * FROM products;
+    `
+      );
+      allProducts = allProducts[0];
+      return view.render("admin/products/all", { allProducts });
+    } catch (error) {
+      console.log(error);
+      return response.redirect("back");
+    }
   }
 
-  async store({ request, resposne }) {
+  async store({ request, response }) {
     try {
       const post = request.post();
       await Database.raw(
@@ -23,27 +34,28 @@ class ProductController {
        ${parseInt(1)})
     `
       );
-      return `<h1 style="color:green">Saved success<h1>`;
+      return response.redirect("/admin/products");
     } catch (error) {
       console.log(error);
-      return `<h1 style="color:red">There was an error<h1>
-      <h3>${error.sqlMessage}</h3>`;
+      return response.redirect("back");
+      //  `<h1 style="color:red">There was an error<h1>
+      // <h3>${error.sqlMessage}</h3>`;
     }
   }
 
-  create({ view }) {
+  create({ view, request, response }) {
     return view.render("admin/products/create");
   }
 
-  show({ view }) {
+  show({ view, request, response }) {
     return view.render("admin/products/show");
   }
-  edit({ view }) {
+  edit({ view, request, response }) {
     return view.render("admin/products/edit");
   }
 
-  update() {}
-  delete() {}
+  update({ request, response }) {}
+  delete({ request, response }) {}
 }
 
 module.exports = ProductController;
