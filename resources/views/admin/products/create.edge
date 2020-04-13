@@ -18,48 +18,64 @@
     <div class="card-body">
       <form action="/admin/products" method="post">
         {{ csrfField()}}
-      <h4 class="header-title">Textual inputs</h4>
-      <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5
-        <code>&lt;input&gt;</code> <code>type</code>.</p>
-      <div class="form-group">
-        <label for="example-text-input" class="col-form-label">Title</label>
-        <input class="form-control" type="text" name="title" value="" id="example-text-input">
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-12 col-md-6">
-          <label for="example-text-input" class="col-form-label">SKU</label>
-          <input class="form-control" type="text" name="sku" value="" id="example-text-input">
-           </div>
-             <div class="col-sm-12 col-md-6">
-          <label for="example-text-input" class="col-form-label">Material</label>
-          <input class="form-control" type="text" name="material" value="" id="example-text-input">
-         </div>
-      </div>
+        <h4 class="header-title">Textual inputs</h4>
+        <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5
+          <code>&lt;input&gt;</code> <code>type</code>.</p>
+        <div class="form-group">
+          <label for="example-text-input" class="col-form-label">Title</label>
+          <input class="form-control" type="text" name="title" value="" id="example-text-input">
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-12 col-md-6">
+            <label for="example-text-input" class="col-form-label">SKU</label>
+            <input class="form-control" type="text" name="sku" value="" id="example-text-input">
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <label for="example-text-input" class="col-form-label">Material</label>
+            <input class="form-control" type="text" name="material" value="" id="example-text-input">
+          </div>
+        </div>
 
-      <div class="form-group row">
-         <div class="col-sm-12 col-md-6">
-        <label for="example-text-input" class="col-form-label">Quantity</label>
-        <input class="form-control" type="text" name="qty" value="" id="example-text-input">
-      </div>
-       <div class="col-sm-12 col-md-6">
-      <label class="col-form-label">Brands</label>
-      <select class="form-control">
-        <option>Nike</option>
-        <option>Adidas</option>
-      </select>
-      </div>
-      </div>
-      <div class="form-group">
-        <label for="example-text-input" class="col-form-label">Description</label>
-        <textarea class="form-control" rows="8" cols="80" name="description" value=""
-          id="example-text-input"></textarea>
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary mb-3">Primary</button>
-      </div>
+        <div class="form-group row">
+          <div class="col-sm-12 col-md-4">
+            <label for="example-text-input" class="col-form-label">Quantity</label>
+            <input class="form-control" type="text" name="qty" value="" id="example-text-input">
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <label for="example-text-input" class="col-form-label">Size</label>
+            <select class="custom-select" name="size">
+              <option value="7">7</option>
+              <option value="7.5">7.5</option>
+              <option value="8">8</option>
+              <option value="8.5">8.5</option>
+              <option value="9">9</option>
+              <option value="9.5">9.5</option>
+              <option value="10">10</option>
+              <option value="10.5">10.5</option>
+              <option value="11">11</option>
+
+            </select>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <label class="col-form-label">Brands</label>
+            <select class="custom-select" name="barnd">
+              <option value="1">Nike</option>
+              <option value="2">Adidas</option>
+              <option value="3">Puma</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="example-text-input" class="col-form-label">Description</label>
+          <textarea class="form-control" rows="8" cols="80" name="description" value=""
+            id="example-text-input"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary mb-3">Primary</button>
+        </div>
       </form>
     </div>
-    </div>
   </div>
+</div>
 </div>
 @endsection

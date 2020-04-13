@@ -1,12 +1,27 @@
 "use strict";
+const Database = use("Database");
 
 class ProductController {
   index({ view }) {
     return view.render("admin/products/all");
   }
 
-  store() {
-    return "hey";
+  async store({ request, resposne }) {
+    try {
+      const post = request.post();
+      await Database.raw(
+        `INSERT INTO products (title, sku, material,description,
+       brand_id, qty,size,user_id)
+       Values("${post.title}", "${post.sku}","${post.material}",
+        "${post.description}" , 3, ${post.qty}, 1, 1)
+    `
+      );
+      return `<h1 style="color:green">Saved success<h1>`;
+    } catch (error) {
+      console.log(error);
+      return `<h1 style="color:red">There was an error<h1>
+      <h3>${error.sqlMessage}</h3>`;
+    }
   }
 
   create({ view }) {
