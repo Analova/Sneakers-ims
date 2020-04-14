@@ -32,10 +32,11 @@ class ProductController {
     try {
       const post = request.post();
       await Database.raw(
-        `INSERT INTO products (title, sku, material,description,
+        `INSERT INTO products (title, sku, img_url, material,description,
        brand_id, qty,size,user_id)
        Values(${sanitize.escape(post.title)}, 
        ${sanitize.escape(post.sku)},
+        ${sanitize.escape(post.img_url)},
        ${sanitize.escape(post.material)},
        ${sanitize.escape(post.description)} ,
        ${parseInt(3)},
