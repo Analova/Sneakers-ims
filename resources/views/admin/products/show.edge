@@ -20,36 +20,32 @@
         <div class="row">
           <div class="col-md-4">
             <img style="width:100%"
-              src="https://th.bing.com/th/id/OIP.suirDJKIO0Xv1nko6TlnewHaHa?w=192&h=192&c=7&o=5&pid=1.7"
+              src="{{product.img_url}}"
               class="show-products-img">
           </div>
           <div class="col-md-8">
-            <h2> Title</h2>
-            <p> <span> Description:</span>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti perspiciatis minus sint hic ex alias
-              officia nam voluptatem saepe esse labore iure placeat aliquid
-              soluta corporis aut nemo ullam, porro nisi? Minus impedit sapiente labore mollitia accusamus
-              nulla ullam est voluptatem sunt. Tempore quae molestias ipsam quasi labore adipisci omnis totam odio nam
-              quisquam? Quidem delectus fugiat molestiae dolorem consequatur nisi incidunt? Adipisci voluptas,
-              fuga aspernatur consequatur dolorem placeat blanditiis facilis consequuntur illum ipsum, tempore quae
-              veritatis, repellat impedit.
+            <h2> {{product.title}}</h2>
+            <p> 
+              <span> Description</span>
+              {{product.description}}
+             
             </p>
             <div  class="details row">
               <div class="col-md-3">
                <h4>SKU</h4>
-               <span>zauz172625</span>
+               <span>{{product.sku}}</span>
               </div>
               <div class="col-md-3">
                 <h4>Material</h4>
-               <span>cotton</span>
+               <span>{{product.material}}</span>
               </div>
               <div class="col-md-3">
                 <h4>Brand</h4>
-               <span>Adidas</span>
+               <span>{{product.brand}}</span>
               </div>
               <div class="col-md-3">
                 <h4>Created By</h4>
-               <span>Mike</span>
+               <span>{{prouct.user}}</span>
               </div>
             </div>
 
@@ -61,11 +57,12 @@
   <div class="col-md-3  mt-5">
     <div class="card">
       <div class="card-body">
-        <a href="/admin/products/id/edit" class="btn btn-primary btn-lg btn-block">
+        <a href="/admin/products/{{prouct.id}}/edit" class="btn btn-primary btn-lg btn-block">
          Edit
           <i class="ti-pencil-alt"></i>
         </a>
-         <a href="/admin/products/id/edit" class="btn btn-danger btn-lg btn-block">
+         <a href="/admin/products/{{prouct.id}}/edit" class="btn btn-danger btn-lg btn-block"
+         onclick="return  confirm('are you sure?')">
         Delete
           <i class="ti-trash"></i>
         </a>
