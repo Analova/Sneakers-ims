@@ -4,21 +4,41 @@ const sanitize = require("sqlstring");
 
 class ProductController {
   async index({ view, request, response }) {
+    // try {
+    //   let allProducts = await Database.raw(`SELECT products.id,
+    //      products.title, products.sku,
+    //     brands.title as brand,
+    //      concat( users.f_name, " " ,users.l_name) as user, products.material,
+    //      products.qty, products.size,
+    //     products.user_id, products.created_at
+    //     FROM products
+    //     INNER JOIN brands
+    //     ON products.brand_id= brands.id
+    //     INNER JOIN users
+    //     ON products.user_id= users.id
+    //     ORDER BY created_at ASC`);
+    //   allProducts = allProducts[0];
+
+    //   return view.render("admin/products/all", { allProducts });
+    // } catch (error) {
+    //   console.log(error);
+    //   return response.redirect("back");
+    // }
+
     try {
-      let allProducts = await Database.raw(
-        `
-         SELECT products.id, 
-         products.title, products.sku,  brands.title as brand,
-         concat( users.f_name, " " ,users.l_name) as user, products.material, products.qty, products.size,  
-        products.user_id, products.created_at  
+      let allProducts = await Database.raw(`
+        SELECT products.id,
+        products.title, products.sku, brands.title as brand,
+        concat(users.f_name, ' ', users.l_name) as user,
+        products.material, products.qty, products.size,
+        products.user_id, products.created_at
         FROM products
         INNER JOIN brands
-        ON products.brand_id= brands.id
+        ON products.brand_id = brands.id
         INNER JOIN users
-        ON products.user_id= users.id 
+        ON products.user_id = users.id
         ORDER BY created_at ASC
-    `
-      );
+      `);
       allProducts = allProducts[0];
 
       return view.render("admin/products/all", { allProducts });
@@ -28,7 +48,7 @@ class ProductController {
     }
   }
 
-  async store({ request, response }) {
+  async store({ request, response, params }) {
     try {
       const post = request.post();
       await Database.raw(
@@ -114,7 +134,33 @@ class ProductController {
     }
   }
 
-  update({ request, response }) {}
+  async update({ request, response, params }) {
+    try {
+      const id = params.id;
+      const post = request.post();
+      await Database.raw(`
+        UPDATE products
+        SET
+        title=${sanitize.escape(post.title)},
+        sku= ${sanitize.escape(post.sku)},
+        img_url=${sanitize.escape(post.img_url)},
+        material=${sanitize.escape(post.material)},
+        description=${sanitize.escape(post.description)} ,
+        brand_id= ${parseInt(3)},
+        qty= ${sanitize.escape(post.qty)},
+        size=${sanitize.escape(post.size)},
+        user_id=${parseInt(1)}
+        WHERE id=${id}
+
+      `);
+
+      return response.redirect(`/admin/products/${id}`);
+    } catch (error) {
+      console.log(error);
+      return response.redirect("back");
+    }
+  }
+
   delete({ request, response }) {}
 }
 
