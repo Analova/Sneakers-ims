@@ -2,9 +2,8 @@
 const Database = use("Database");
 const sanitize = require("sqlstring");
 
-class ProductController {
+class BrandController {
   async index({ view, request, response }) {
-
     try {
       let allProducts = await Database.raw(`
         SELECT products.id,
@@ -159,4 +158,4 @@ class ProductController {
   }
 }
 
-module.exports = ProductController;
+module.exports = BrandController;
