@@ -12,7 +12,7 @@ class BrandController {
         FROM brands
         INNER JOIN users
         ON brands.user_id = users.id
-        ORDER BY created_at ASC
+        ORDER BY brands.title ASC
       `);
       allBrands = allBrands[0];
 
@@ -48,45 +48,37 @@ class BrandController {
   }
 
   async show({ view, request, response, params }) {
-    //return params;
     try {
-      let brands = await Database.raw(
-        `
-        SELECT brands.id, 
-         brands.title, brands.sku,brands.img_url,
-         brands.description,brands.title as brand,
-         concat( users.f_name, " " ,users.l_name) as user, brands.material, brands.qty, brands.size,  
-        brands.user_id, brands.created_at  
+      let brand = await Database.raw(`
+        SELECT brands.id,
+        brands.title, brands.img_url, brands.description,
+        concat(users.f_name, ' ', users.l_name) as user,
+        brands.user_id, brands.created_at, brands.updated_at
         FROM brands
-        INNER JOIN brands
-        ON brands.brand_id= brands.id
         INNER JOIN users
-        ON brands.user_id= users.id 
-        WHERE brands.id= ${params.id}
-        ORDER BY created_at ASC
+        ON brands.user_id = users.id
+        WHERE brands.id = ${params.id}
         LIMIT 1
-    `
-      );
-      brands = brands[0][0];
+      `);
+      brand = brand[0][0];
 
-      return view.render("admin/brands/show", { brands });
+      return view.render("admin/brands/show", { brand });
     } catch (error) {
       console.log(error);
       return response.redirect("back");
     }
   }
+
   async edit({ view, request, response, params }) {
     try {
       let brands = await Database.raw(
         `
         SELECT brands.id, 
-         brands.title, brands.sku,brands.img_url,
-         brands.description,brands.title as brand,
-         concat( users.f_name, " " ,users.l_name) as user, brands.material, brands.qty, brands.size,  
-        brands.user_id, brands.created_at  
+         brands.title,brands.img_url,
+         brands.description,
+         concat( users.f_name, " " ,users.l_name) as user,  
+        brands.user_id, brands.created_at ,  brands.updated_at  
         FROM brands
-        INNER JOIN brands
-        ON brands.brand_id= brands.id
         INNER JOIN users
         ON brands.user_id= users.id 
         WHERE brands.id= ${params.id}
@@ -110,17 +102,10 @@ class BrandController {
       await Database.raw(`
         UPDATE brands
         SET
-        title=${sanitize.escape(post.title)},
-        sku= ${sanitize.escape(post.sku)},
-        img_url=${sanitize.escape(post.img_url)},
-        material=${sanitize.escape(post.material)},
-        description=${sanitize.escape(post.description)} ,
-        brand_id= ${parseInt(3)},
-        qty= ${sanitize.escape(post.qty)},
-        size=${sanitize.escape(post.size)},
-        user_id=${parseInt(1)}
-        WHERE id=${id}
-
+        title = ${sanitize.escape(post.title)},
+        img_url = ${sanitize.escape(post.img_url)},
+        description = ${sanitize.escape(post.description)}
+        WHERE id = ${id}
       `);
 
       return response.redirect(`/admin/brands/${id}`);
@@ -133,14 +118,12 @@ class BrandController {
   async delete({ request, response, params }) {
     try {
       const id = params.id;
-      const post = request.post();
       await Database.raw(`
-       DELETE FROM brands
-        WHERE id=${id}
-
+        DELETE FROM brands
+        WHERE id = ${id}
       `);
 
-      return response.redirect("/admin/brands");
+      return response.redirect(`/admin/brands`);
     } catch (error) {
       console.log(error);
       return response.redirect("back");
