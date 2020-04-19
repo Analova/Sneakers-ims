@@ -1,19 +1,48 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import update from "react-addons-update";
 
 class Layout extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
+      form: {
+        f_name: "",
+        l_name: "",
+        address: "",
+        address_2: "",
+        city: "",
+        state: "NY",
+        country: "USA",
+        zipcode: "",
+        payment_type: "paypal",
+      },
     };
   }
-  clickedBtn = () => {
-    console.log("swag");
+
+  change = (event) => {
+    var name = event.target.name;
+    var value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    let currentState = this.state;
+    let newState = update(currentState, {
+      form: {
+        $merge: {
+          [name]: value,
+        },
+      },
+    });
+
+    this.setState(newState, () => {
+      console.log(this.state);
+    });
   };
+
   render() {
     return (
-      <htmlForm action="/admin/products" method="post">
+      <form action="/admin/products" method="post">
         <div className="row form-group">
           <div className="col-sm-12 col-md-6">
             <label htmlFor="example-text-input" className="col-htmlForm-label">
@@ -23,8 +52,9 @@ class Layout extends Component {
               className="form-control"
               type="text"
               name="f_name"
-              value=""
               id="example-text-input"
+              value={this.state.form.f_name}
+              onChange={this.change}
             />
           </div>
           <div className="col-sm-12 col-md-6">
@@ -35,8 +65,9 @@ class Layout extends Component {
               className="form-control"
               type="text"
               name="l_name"
-              value=""
               id="example-text-input"
+              value={this.state.form.l_name}
+              onChange={this.change}
             />
           </div>
         </div>
@@ -49,8 +80,9 @@ class Layout extends Component {
               className="form-control"
               type="text"
               name="address"
-              value=""
               id="example-text-input"
+              value={this.state.form.address}
+              onChange={this.change}
             />
           </div>
           <div className="col-sm-12 col-md-6">
@@ -61,8 +93,9 @@ class Layout extends Component {
               className="form-control"
               type="text"
               name="address_2"
-              value=""
               id="example-text-input"
+              value={this.state.form.address_2}
+              onChange={this.change}
             />
           </div>
         </div>
@@ -76,15 +109,21 @@ class Layout extends Component {
               className="form-control"
               type="text"
               name="city"
-              value=""
               id="example-text-input"
+              value={this.state.form.city}
+              onChange={this.change}
             />
           </div>
           <div className="col-sm-12 col-md-3">
             <label htmlFor="example-text-input" className="col-htmlForm-label">
               State
             </label>
-            <select className="custom-select" name="state">
+            <select
+              className="custom-select"
+              name="state"
+              value={this.state.form.state}
+              onChange={this.change}
+            >
               <option value="7">7</option>
               <option value="7.5">7.5</option>
               <option value="8">8</option>
@@ -96,16 +135,40 @@ class Layout extends Component {
               <option value="11">11</option>
             </select>
           </div>
-          <div className="col-sm-12 col-md-3">
+          <div className="col-sm-12 col-md-6">
             <label className="col-htmlForm-label">Country</label>
-            <select className="custom-select" name="country">
+            <select
+              className="custom-select"
+              name="country"
+              value={this.state.form.country}
+              onChange={this.change}
+            >
               <option value="{{brand.id}}">country</option>
             </select>
           </div>
+        </div>
 
-          <div className="col-sm-12 col-md-3">
+        <div className="form-group row">
+          <div className="col-sm-12 col-md-6">
+            <label className="col-form-label">Zipcode</label>
+            <input
+              className="form-control"
+              type="text"
+              value={this.state.form.zipcode}
+              onChange={this.change}
+              name="zipcode"
+              id="example-text-input"
+            />
+          </div>
+
+          <div className="col-sm-12 col-md-6">
             <label className="col-htmlForm-label">Payment Type</label>
-            <select className="custom-select" name="payment_type">
+            <select
+              className="custom-select"
+              name="payment_type"
+              value={this.state.form.payment_type}
+              onChange={this.change}
+            >
               <option value="{{brand.id}}">paypal</option>
             </select>
           </div>
@@ -175,7 +238,7 @@ class Layout extends Component {
             Submit
           </button>
         </div>
-      </htmlForm>
+      </form>
     );
   }
 }
