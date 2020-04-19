@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import update from "react-addons-update";
+var UsaStates = require("usa-states").UsaStates;
+var countries = require("country-list");
 
 class Layout extends Component {
   constructor() {
@@ -13,7 +15,7 @@ class Layout extends Component {
         address_2: "",
         city: "",
         state: "NY",
-        country: "USA",
+        country: "US",
         zipcode: "",
         payment_type: "paypal",
       },
@@ -38,6 +40,29 @@ class Layout extends Component {
     this.setState(newState, () => {
       console.log(this.state);
     });
+  };
+
+  //********************** */
+  showStates = () => {
+    var usStates = new UsaStates();
+
+    return usStates.states.map((item) => (
+      <option key={item.abbreviation} value={item.abbreviation}>
+        {item.name}
+      </option>
+    ));
+    // console.log(usStates.states);
+  };
+
+  showCountries = () => {
+    var allCountries = countries.getData();
+
+    return allCountries.map((item) => (
+      <option key={item.code} value={item.code}>
+        {item.name}
+      </option>
+    ));
+    //console.log(allCountries);
   };
 
   render() {
@@ -124,15 +149,7 @@ class Layout extends Component {
               value={this.state.form.state}
               onChange={this.change}
             >
-              <option value="7">7</option>
-              <option value="7.5">7.5</option>
-              <option value="8">8</option>
-              <option value="8.5">8.5</option>
-              <option value="9">9</option>
-              <option value="9.5">9.5</option>
-              <option value="10">10</option>
-              <option value="10.5">10.5</option>
-              <option value="11">11</option>
+              {this.showStates()}
             </select>
           </div>
           <div className="col-sm-12 col-md-6">
@@ -143,7 +160,7 @@ class Layout extends Component {
               value={this.state.form.country}
               onChange={this.change}
             >
-              <option value="{{brand.id}}">country</option>
+              {this.showCountries()}
             </select>
           </div>
         </div>
@@ -169,7 +186,8 @@ class Layout extends Component {
               value={this.state.form.payment_type}
               onChange={this.change}
             >
-              <option value="{{brand.id}}">paypal</option>
+              <option>Paypal</option>
+              <option>Credit card</option>
             </select>
           </div>
         </div>
