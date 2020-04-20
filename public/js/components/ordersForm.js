@@ -1,22 +1,26 @@
 webpackJsonp([0],{
 
-/***/ 236:
+/***/ 232:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(100);
+var _react = __webpack_require__(76);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(101);
+var _reactDom = __webpack_require__(77);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactAddonsUpdate = __webpack_require__(232);
+var _reactAddonsUpdate = __webpack_require__(150);
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
@@ -30,8 +34,188 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsaStates = __webpack_require__(234).UsaStates;
-var countries = __webpack_require__(231);
+var UsaStates = __webpack_require__(152).UsaStates;
+
+var Popup = function (_Component) {
+  _inherits(Popup, _Component);
+
+  function Popup() {
+    _classCallCheck(this, Popup);
+
+    var _this = _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this));
+
+    _this.change = function (event) {
+      var name = event.target.name;
+      var value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+      var currentState = _this.state;
+      var newState = (0, _reactAddonsUpdate2.default)(currentState, {
+        form: {
+          $merge: _defineProperty({}, name, value)
+        }
+      });
+
+      _this.setState(newState, function () {
+        console.log(_this.state);
+      });
+    };
+
+    _this.clickedCancelBtn = function () {
+      _this.props.closePopup();
+    };
+
+    _this.state = {
+      form: {
+        product: "",
+        qty: 1
+      }
+    };
+    return _this;
+  }
+
+  _createClass(Popup, [{
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        { className: "popup " + (this.props.showPopup ? "active" : "") },
+        _react2.default.createElement(
+          "div",
+          { className: "container-box" },
+          _react2.default.createElement(
+            "div",
+            { className: "row" },
+            _react2.default.createElement(
+              "div",
+              { className: "col-md-12" },
+              _react2.default.createElement(
+                "h2",
+                null,
+                "Add Item to Order"
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "htmlForm-group" },
+                _react2.default.createElement(
+                  "label",
+                  { htmlFor: "" },
+                  "Product"
+                ),
+                _react2.default.createElement(
+                  "select",
+                  {
+                    className: "custom-select",
+                    name: "product",
+                    value: this.state.form.product,
+                    onChange: this.change
+                  },
+                  _react2.default.createElement(
+                    "option",
+                    { value: "1" },
+                    "Nike"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "2" },
+                    "Adidas"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "3" },
+                    "Puma"
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "htmlForm-group" },
+                _react2.default.createElement(
+                  "label",
+                  { htmlFor: "" },
+                  "Quantity"
+                ),
+                _react2.default.createElement(
+                  "select",
+                  {
+                    className: "custom-select",
+                    name: "qty",
+                    value: this.state.qty,
+                    onChange: this.change
+                  },
+                  _react2.default.createElement(
+                    "option",
+                    { value: "1" },
+                    "1"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "0" },
+                    "2"
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "add-btn btn btn-primary mb-3" },
+                "save item"
+              ),
+              _react2.default.createElement(
+                "div",
+                {
+                  className: "add-btn btn btn-primary mb-3",
+                  onClick: this.clickedCancelBtn
+                },
+                "cancel"
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Popup;
+}(_react.Component);
+
+exports.default = Popup;
+
+/***/ }),
+
+/***/ 237:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(76);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(77);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactAddonsUpdate = __webpack_require__(150);
+
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+
+var _Popup = __webpack_require__(232);
+
+var _Popup2 = _interopRequireDefault(_Popup);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UsaStates = __webpack_require__(152).UsaStates;
+var countries = __webpack_require__(234);
 
 var Layout = function (_Component) {
   _inherits(Layout, _Component);
@@ -82,6 +266,12 @@ var Layout = function (_Component) {
       //console.log(allCountries);
     };
 
+    _this.addNewBtn = function () {
+      _this.setState({
+        showPopup: !_this.state.showPopup
+      });
+    };
+
     _this.state = {
       form: {
         f_name: "",
@@ -93,7 +283,8 @@ var Layout = function (_Component) {
         country: "US",
         zipcode: "",
         payment_type: "paypal"
-      }
+      },
+      showPopup: false
     };
     return _this;
   }
@@ -263,7 +454,7 @@ var Layout = function (_Component) {
             })
           ),
           _react2.default.createElement(
-            "div",
+            "option",
             { className: "col-sm-12 col-md-6" },
             _react2.default.createElement(
               "label",
@@ -285,7 +476,7 @@ var Layout = function (_Component) {
               ),
               _react2.default.createElement(
                 "option",
-                null,
+                { value: "{{brand.id}}" },
                 "Credit card"
               )
             )
@@ -355,7 +546,7 @@ var Layout = function (_Component) {
               { className: "item-box" },
               _react2.default.createElement(
                 "div",
-                { className: "add-item-button" },
+                { className: "add-item-button", onClick: this.addNewBtn },
                 _react2.default.createElement(
                   "span",
                   null,
@@ -365,73 +556,7 @@ var Layout = function (_Component) {
               )
             )
           ),
-          _react2.default.createElement(
-            "div",
-            { className: "popup" },
-            _react2.default.createElement(
-              "div",
-              { className: "container-box" },
-              _react2.default.createElement(
-                "div",
-                { className: "row" },
-                _react2.default.createElement(
-                  "div",
-                  { className: "col-md-12" },
-                  _react2.default.createElement(
-                    "h2",
-                    null,
-                    "Add Item to Order"
-                  ),
-                  _react2.default.createElement(
-                    "div",
-                    { className: "htmlForm-group" },
-                    _react2.default.createElement(
-                      "label",
-                      { htmlFor: "" },
-                      "Product"
-                    ),
-                    _react2.default.createElement(
-                      "select",
-                      { className: "custom-select", name: "product" },
-                      _react2.default.createElement(
-                        "option",
-                        { value: "0" },
-                        "title/quantity"
-                      )
-                    )
-                  ),
-                  _react2.default.createElement(
-                    "div",
-                    { className: "htmlForm-group" },
-                    _react2.default.createElement(
-                      "label",
-                      { htmlFor: "" },
-                      "Quantity"
-                    ),
-                    _react2.default.createElement(
-                      "select",
-                      { className: "custom-select", name: "qty" },
-                      _react2.default.createElement(
-                        "option",
-                        { value: "0" },
-                        "1"
-                      )
-                    )
-                  ),
-                  _react2.default.createElement(
-                    "div",
-                    { className: "add-btn btn btn-primary mb-3" },
-                    "save item"
-                  ),
-                  _react2.default.createElement(
-                    "div",
-                    { className: "add-btn btn btn-primary mb-3" },
-                    "cancel"
-                  )
-                )
-              )
-            )
-          )
+          _react2.default.createElement(_Popup2.default, { showPopup: this.state.showPopup, closePopup: this.addNewBtn })
         ),
         _react2.default.createElement(
           "div",
@@ -455,4 +580,4 @@ _reactDom2.default.render(_react2.default.createElement(Layout, null), ordersFor
 
 /***/ })
 
-},[236]);
+},[237]);
