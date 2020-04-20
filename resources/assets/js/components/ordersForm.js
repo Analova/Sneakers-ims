@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import update from "react-addons-update";
 import Popup from "./Popup";
+import axios from "axios";
 var UsaStates = require("usa-states").UsaStates;
 var countries = require("country-list");
 
@@ -20,8 +21,28 @@ class Layout extends Component {
         zipcode: "",
         payment_type: "paypal",
       },
+      allProducts: "",
       showPopup: false,
     };
+  }
+
+  componentWillMount() {
+    this.getAllProducts();
+  }
+  async getAllProducts() {
+    try {
+      let allProducts = await axios.get("/api/admin/products");
+      allProducts = allProducts.data;
+      console.log(allProducts);
+      this.setState(
+        {
+          allProducts,
+        },
+        () => console.log(this.state)
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   change = (event) => {
@@ -235,7 +256,11 @@ class Layout extends Component {
               </div>
             </div>
           </div>
-          <Popup showPopup={this.state.showPopup} closePopup={this.addNewBtn} />
+          <Popup
+            showPopup={this.state.showPopup}
+            closePopup={this.addNewBtn}
+            allProducts={this.state.allProducts}
+          />
         </div>
         <div className="htmlForm-group">
           <button type="submit" className="btn btn-primary mb-3">

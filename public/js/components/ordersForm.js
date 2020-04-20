@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 232:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(76);
+var _react = __webpack_require__(77);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(77);
+var _reactDom = __webpack_require__(78);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactAddonsUpdate = __webpack_require__(150);
+var _reactAddonsUpdate = __webpack_require__(152);
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
@@ -34,7 +34,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsaStates = __webpack_require__(152).UsaStates;
+var UsaStates = __webpack_require__(154).UsaStates;
 
 var Popup = function (_Component) {
   _inherits(Popup, _Component);
@@ -57,6 +57,18 @@ var Popup = function (_Component) {
       _this.setState(newState, function () {
         console.log(_this.state);
       });
+    };
+
+    _this.showProducts = function () {
+      if (_this.props.allProducts != "") {
+        return _this.props.allProducts.map(function (item) {
+          return _react2.default.createElement(
+            "option",
+            { key: item.id, value: item.id },
+            item.title
+          );
+        });
+      }
     };
 
     _this.clickedCancelBtn = function () {
@@ -108,21 +120,7 @@ var Popup = function (_Component) {
                     value: this.state.form.product,
                     onChange: this.change
                   },
-                  _react2.default.createElement(
-                    "option",
-                    { value: "1" },
-                    "Nike"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "2" },
-                    "Adidas"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "3" },
-                    "Puma"
-                  )
+                  this.showProducts()
                 )
               ),
               _react2.default.createElement(
@@ -148,7 +146,7 @@ var Popup = function (_Component) {
                   ),
                   _react2.default.createElement(
                     "option",
-                    { value: "0" },
+                    { value: "2" },
                     "2"
                   )
                 )
@@ -180,7 +178,7 @@ exports.default = Popup;
 
 /***/ }),
 
-/***/ 237:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -188,23 +186,29 @@ exports.default = Popup;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(76);
+var _react = __webpack_require__(77);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(77);
+var _reactDom = __webpack_require__(78);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactAddonsUpdate = __webpack_require__(150);
+var _reactAddonsUpdate = __webpack_require__(152);
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
-var _Popup = __webpack_require__(232);
+var _Popup = __webpack_require__(240);
 
 var _Popup2 = _interopRequireDefault(_Popup);
 
+var _axios = __webpack_require__(239);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -214,8 +218,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsaStates = __webpack_require__(152).UsaStates;
-var countries = __webpack_require__(234);
+var UsaStates = __webpack_require__(154).UsaStates;
+var countries = __webpack_require__(242);
 
 var Layout = function (_Component) {
   _inherits(Layout, _Component);
@@ -284,15 +288,69 @@ var Layout = function (_Component) {
         zipcode: "",
         payment_type: "paypal"
       },
+      allProducts: "",
       showPopup: false
     };
     return _this;
   }
 
-  //********************** */
-
-
   _createClass(Layout, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.getAllProducts();
+    }
+  }, {
+    key: "getAllProducts",
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
+        var allProducts;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return _axios2.default.get("/api/admin/products");
+
+              case 3:
+                allProducts = _context.sent;
+
+                allProducts = allProducts.data;
+                console.log(allProducts);
+                this.setState({
+                  allProducts: allProducts
+                }, function () {
+                  return console.log(_this2.state);
+                });
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](0);
+
+                console.log(_context.t0);
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 9]]);
+      }));
+
+      function getAllProducts() {
+        return _ref.apply(this, arguments);
+      }
+
+      return getAllProducts;
+    }()
+
+    //********************** */
+
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -556,7 +614,11 @@ var Layout = function (_Component) {
               )
             )
           ),
-          _react2.default.createElement(_Popup2.default, { showPopup: this.state.showPopup, closePopup: this.addNewBtn })
+          _react2.default.createElement(_Popup2.default, {
+            showPopup: this.state.showPopup,
+            closePopup: this.addNewBtn,
+            allProducts: this.state.allProducts
+          })
         ),
         _react2.default.createElement(
           "div",
@@ -580,4 +642,4 @@ _reactDom2.default.render(_react2.default.createElement(Layout, null), ordersFor
 
 /***/ })
 
-},[237]);
+},[262]);
