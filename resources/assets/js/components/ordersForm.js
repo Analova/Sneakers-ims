@@ -22,6 +22,7 @@ class Layout extends Component {
         payment_type: "paypal",
       },
       allProducts: "",
+      allItems: [],
       showPopup: false,
     };
   }
@@ -33,7 +34,7 @@ class Layout extends Component {
     try {
       let allProducts = await axios.get("/api/admin/products");
       allProducts = allProducts.data;
-      console.log(allProducts);
+      //console.log(allProducts);
       this.setState(
         {
           allProducts,
@@ -44,6 +45,18 @@ class Layout extends Component {
       console.log(error);
     }
   }
+
+  addItemToList = (item) => {
+    let allItems = this.state.allItems;
+    let oldState = this.state;
+    let newState = update(oldState, {
+      allItems: { $push: [item] },
+    });
+    this.setState(newState, () => {
+      console.log("New State");
+      console.log(this.state);
+    });
+  };
 
   change = (event) => {
     var name = event.target.name;
@@ -260,6 +273,7 @@ class Layout extends Component {
             showPopup={this.state.showPopup}
             closePopup={this.addNewBtn}
             allProducts={this.state.allProducts}
+            addItemToList={this.addItemToList}
           />
         </div>
         <div className="htmlForm-group">

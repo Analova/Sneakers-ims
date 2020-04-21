@@ -75,6 +75,18 @@ var Popup = function (_Component) {
       _this.props.closePopup();
     };
 
+    _this.clickedSaveItemBtn = function () {
+      var product = _this.props.allProducts.filter(function (product) {
+        return product.id == _this.state.form.product;
+      });
+      var itemData = {
+        productInfo: product[0],
+        qtyBuying: _this.state.form.qty
+      };
+
+      _this.props.addItemToList(itemData);
+    };
+
     _this.state = {
       form: {
         product: "",
@@ -148,18 +160,61 @@ var Popup = function (_Component) {
                     "option",
                     { value: "2" },
                     "2"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "3" },
+                    "3"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "4" },
+                    "4"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "5" },
+                    "5"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "6" },
+                    "6"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "7" },
+                    "7"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "8" },
+                    "8"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "9" },
+                    "9"
+                  ),
+                  _react2.default.createElement(
+                    "option",
+                    { value: "10" },
+                    "10"
                   )
                 )
               ),
               _react2.default.createElement(
                 "div",
-                { className: "add-btn btn btn-primary mb-3" },
+                {
+                  className: "add-btn btn btn-primary mb-3",
+                  onClick: this.clickedSaveItemBtn
+                },
                 "save item"
               ),
               _react2.default.createElement(
                 "div",
                 {
-                  className: "add-btn btn btn-primary mb-3",
+                  className: "add-btn btn btn-danger mb-3",
                   onClick: this.clickedCancelBtn
                 },
                 "cancel"
@@ -229,6 +284,18 @@ var Layout = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this));
 
+    _this.addItemToList = function (item) {
+      var allItems = _this.state.allItems;
+      var oldState = _this.state;
+      var newState = (0, _reactAddonsUpdate2.default)(oldState, {
+        allItems: { $push: [item] }
+      });
+      _this.setState(newState, function () {
+        console.log("New State");
+        console.log(_this.state);
+      });
+    };
+
     _this.change = function (event) {
       var name = event.target.name;
       var value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
@@ -289,6 +356,7 @@ var Layout = function (_Component) {
         payment_type: "paypal"
       },
       allProducts: "",
+      allItems: [],
       showPopup: false
     };
     return _this;
@@ -318,27 +386,27 @@ var Layout = function (_Component) {
                 allProducts = _context.sent;
 
                 allProducts = allProducts.data;
-                console.log(allProducts);
+                //console.log(allProducts);
                 this.setState({
                   allProducts: allProducts
                 }, function () {
                   return console.log(_this2.state);
                 });
-                _context.next = 12;
+                _context.next = 11;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
 
                 console.log(_context.t0);
 
-              case 12:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 9]]);
+        }, _callee, this, [[0, 8]]);
       }));
 
       function getAllProducts() {
@@ -617,7 +685,8 @@ var Layout = function (_Component) {
           _react2.default.createElement(_Popup2.default, {
             showPopup: this.state.showPopup,
             closePopup: this.addNewBtn,
-            allProducts: this.state.allProducts
+            allProducts: this.state.allProducts,
+            addItemToList: this.addItemToList
           })
         ),
         _react2.default.createElement(

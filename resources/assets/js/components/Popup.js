@@ -48,6 +48,18 @@ export default class Popup extends Component {
     this.props.closePopup();
   };
 
+  clickedSaveItemBtn = () => {
+    let product = this.props.allProducts.filter(
+      (product) => product.id == this.state.form.product
+    );
+    let itemData = {
+      productInfo: product[0],
+      qtyBuying: this.state.form.qty,
+    };
+
+    this.props.addItemToList(itemData);
+  };
+
   render() {
     return (
       <div className={`popup ${this.props.showPopup ? "active" : ""}`}>
@@ -76,11 +88,24 @@ export default class Popup extends Component {
                 >
                   <option value="1">1</option>
                   <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
                 </select>
               </div>
-              <div className="add-btn btn btn-primary mb-3">save item</div>
               <div
                 className="add-btn btn btn-primary mb-3"
+                onClick={this.clickedSaveItemBtn}
+              >
+                save item
+              </div>
+              <div
+                className="add-btn btn btn-danger mb-3"
                 onClick={this.clickedCancelBtn}
               >
                 cancel
