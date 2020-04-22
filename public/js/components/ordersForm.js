@@ -493,40 +493,42 @@ var Layout = function (_Component) {
     key: "submitForm",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var submit;
+        var csrf, submit;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 console.log("Submit form now!");
                 _context2.prev = 1;
-                _context2.next = 4;
+                csrf = document.getElementsByName("_csrf")[0].value;
+                _context2.next = 5;
                 return _axios2.default.post("/api/admin/products", {
+                  _csrf: csrf,
                   form: this.state.form,
                   allItems: this.state.allItems
                 });
 
-              case 4:
+              case 5:
                 submit = _context2.sent;
 
                 console.log(submit);
-                _context2.next = 13;
+                _context2.next = 14;
                 break;
 
-              case 8:
-                _context2.prev = 8;
+              case 9:
+                _context2.prev = 9;
                 _context2.t0 = _context2["catch"](1);
 
                 console.log("==========ERROR SUMBITING FORM");
                 console.log(_context2.t0);
                 console.log("==========ERROR SUMBITING FORM");
 
-              case 13:
+              case 14:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[1, 8]]);
+        }, _callee2, this, [[1, 9]]);
       }));
 
       function submitForm() {

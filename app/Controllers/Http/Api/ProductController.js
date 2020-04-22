@@ -30,25 +30,27 @@ class ProductController {
   async store({ request, response, params }) {
     try {
       const post = request.post();
-      //   await Database.raw(
-      //     `INSERT INTO products (title, sku, img_url, material,description,
-      //    brand_id, qty,size,user_id)
-      //    Values(${sanitize.escape(post.title)},
-      //    ${sanitize.escape(post.sku)},
-      //     ${sanitize.escape(post.img_url)},
-      //    ${sanitize.escape(post.material)},
-      //    ${sanitize.escape(post.description)} ,
-      //     ${sanitize.escape(post.brand_id)} ,
-      //    ${sanitize.escape(post.qty)},
-      //    ${sanitize.escape(post.size)},
-      //    ${parseInt(1)})
-      // `
-      //   );
+      const order = await Database.raw(`
+        INSERT INTO orders (f_name, l_name, address, address_2, city, state, country, payment_type,  user_id)
+        Values(${sanitize.escape(post.form.f_name)}, ${sanitize.escape(
+        post.form.l_name
+      )},
+        ${sanitize.escape(post.form.address)},
+        ${sanitize.escape(post.form.address_2)},
+        ${sanitize.escape(post.form.city)},
+        ${sanitize.escape(post.form.state)},
+        ${sanitize.escape(post.form.country)},
+        ${sanitize.escape(post.form.payment_type)},
+        ${parseInt(1)});
+
+      `);
+      const order_id = order[0].insertId;
       return {
         message: "Recieved everything successfully",
-        post: post,
+        post,
+        order_id: order[0].insertId,
       };
-      return response.redirect("/admin/products");
+      //return response.redirect("/admin/products");
     } catch (error) {
       console.log(error);
       return response.redirect("back");
