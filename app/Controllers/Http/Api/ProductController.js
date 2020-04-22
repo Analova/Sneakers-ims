@@ -27,6 +27,33 @@ class ProductController {
       return response.redirect("back");
     }
   }
+  async store({ request, response, params }) {
+    try {
+      const post = request.post();
+      //   await Database.raw(
+      //     `INSERT INTO products (title, sku, img_url, material,description,
+      //    brand_id, qty,size,user_id)
+      //    Values(${sanitize.escape(post.title)},
+      //    ${sanitize.escape(post.sku)},
+      //     ${sanitize.escape(post.img_url)},
+      //    ${sanitize.escape(post.material)},
+      //    ${sanitize.escape(post.description)} ,
+      //     ${sanitize.escape(post.brand_id)} ,
+      //    ${sanitize.escape(post.qty)},
+      //    ${sanitize.escape(post.size)},
+      //    ${parseInt(1)})
+      // `
+      //   );
+      return {
+        message: "Recieved everything successfully",
+        post: post,
+      };
+      return response.redirect("/admin/products");
+    } catch (error) {
+      console.log(error);
+      return response.redirect("back");
+    }
+  }
 }
 
 module.exports = ProductController;

@@ -25,6 +25,7 @@ class Layout extends Component {
       allItems: [],
       showPopup: false,
     };
+    this.submitForm = this.submitForm.bind(this);
   }
 
   componentWillMount() {
@@ -119,7 +120,8 @@ class Layout extends Component {
             }}
           >
             <div
-              className="item-delete"
+              className="item-
+              "
               onClick={this.removeItem.bind(null, index)}
             >
               <i className="ti-close"></i>
@@ -146,6 +148,21 @@ class Layout extends Component {
     });
     this.setState(newState);
   };
+
+  async submitForm() {
+    console.log("Submit form now!");
+    try {
+      var submit = await axios.post("/api/admin/products", {
+        form: this.state.form,
+        allItems: this.state.allItems,
+      });
+      console.log(submit);
+    } catch (error) {
+      console.log("==========ERROR SUMBITING FORM");
+      console.log(error);
+      console.log("==========ERROR SUMBITING FORM");
+    }
+  }
 
   render() {
     return (
@@ -293,10 +310,10 @@ class Layout extends Component {
             addItemToList={this.addItemToList}
           />
         </div>
-        <div className="htmlForm-group">
-          <button type="submit" className="btn btn-primary mb-3">
+        <div className="form-group">
+          <div onClick={this.submitForm} className="btn btn-primary mb-3">
             Submit
-          </button>
+          </div>
         </div>
       </form>
     );

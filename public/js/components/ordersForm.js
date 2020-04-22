@@ -372,7 +372,7 @@ var Layout = function (_Component) {
               _react2.default.createElement(
                 "div",
                 {
-                  className: "item-delete",
+                  className: "item- ",
                   onClick: _this.removeItem.bind(null, index)
                 },
                 _react2.default.createElement("i", { className: "ti-close" })
@@ -429,6 +429,7 @@ var Layout = function (_Component) {
       allItems: [],
       showPopup: false
     };
+    _this.submitForm = _this.submitForm.bind(_this);
     return _this;
   }
 
@@ -488,6 +489,52 @@ var Layout = function (_Component) {
 
     //********************** */
 
+  }, {
+    key: "submitForm",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var submit;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                console.log("Submit form now!");
+                _context2.prev = 1;
+                _context2.next = 4;
+                return _axios2.default.post("/api/admin/products", {
+                  form: this.state.form,
+                  allItems: this.state.allItems
+                });
+
+              case 4:
+                submit = _context2.sent;
+
+                console.log(submit);
+                _context2.next = 13;
+                break;
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](1);
+
+                console.log("==========ERROR SUMBITING FORM");
+                console.log(_context2.t0);
+                console.log("==========ERROR SUMBITING FORM");
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[1, 8]]);
+      }));
+
+      function submitForm() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return submitForm;
+    }()
   }, {
     key: "render",
     value: function render() {
@@ -718,10 +765,10 @@ var Layout = function (_Component) {
         ),
         _react2.default.createElement(
           "div",
-          { className: "htmlForm-group" },
+          { className: "form-group" },
           _react2.default.createElement(
-            "button",
-            { type: "submit", className: "btn btn-primary mb-3" },
+            "div",
+            { onClick: this.submitForm, className: "btn btn-primary mb-3" },
             "Submit"
           )
         )
