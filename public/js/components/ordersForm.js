@@ -84,6 +84,10 @@ var Popup = function (_Component) {
         qtyBuying: _this.state.form.qty
       };
 
+      // let itemData={
+      //   id:this.state.form.product,
+      //   qty:this.state.form.qty
+      // }
       _this.props.addItemToList(itemData);
     };
 
@@ -132,6 +136,11 @@ var Popup = function (_Component) {
                     value: this.state.form.product,
                     onChange: this.change
                   },
+                  _react2.default.createElement(
+                    "option",
+                    { value: "none" },
+                    "Select a sneaker"
+                  ),
                   this.showProducts()
                 )
               ),
@@ -341,6 +350,67 @@ var Layout = function (_Component) {
       _this.setState({
         showPopup: !_this.state.showPopup
       });
+    };
+
+    _this.showAllItems = function () {
+      // console.log("all items test");
+      return _this.state.allItems.map(function (item, index) {
+        return _react2.default.createElement(
+          "div",
+          { key: item.productInfo.id, className: "col-md-3" },
+          _react2.default.createElement(
+            "div",
+            { className: "item-box" },
+            _react2.default.createElement(
+              "div",
+              {
+                className: "item-img",
+                style: {
+                  background: "url(\"" + item.productInfo.img_url + "\")"
+                }
+              },
+              _react2.default.createElement(
+                "div",
+                {
+                  className: "item-delete",
+                  onClick: _this.removeItem.bind(null, index)
+                },
+                _react2.default.createElement("i", { className: "ti-close" })
+              )
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "title" },
+              item.productInfo.title
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "quantity" },
+              _react2.default.createElement(
+                "label",
+                { htmlFor: "example-text-input", className: "col-htmlForm-label" },
+                "Quantity"
+              ),
+              _react2.default.createElement(
+                "h4",
+                null,
+                " ",
+                item.qtyBuying
+              )
+            )
+          )
+        );
+      });
+    };
+
+    _this.removeItem = function (index) {
+      var oldState = _this.state;
+      var newState = (0, _reactAddonsUpdate2.default)(oldState, {
+        allItems: {
+          $splice: [[index, 1]]
+        }
+      });
+      _this.setState(newState);
     };
 
     _this.state = {
@@ -580,11 +650,11 @@ var Layout = function (_Component) {
             })
           ),
           _react2.default.createElement(
-            "option",
+            "div",
             { className: "col-sm-12 col-md-6" },
             _react2.default.createElement(
               "label",
-              { className: "col-htmlForm-label" },
+              { className: "col-form-label" },
               "Payment Type"
             ),
             _react2.default.createElement(
@@ -597,13 +667,13 @@ var Layout = function (_Component) {
               },
               _react2.default.createElement(
                 "option",
-                null,
+                { value: "paypal" },
                 "Paypal"
               ),
               _react2.default.createElement(
                 "option",
-                { value: "{{brand.id}}" },
-                "Credit card"
+                { value: "credit_card" },
+                "Credit Card"
               )
             )
           )
@@ -620,50 +690,7 @@ var Layout = function (_Component) {
               "Order Items"
             )
           ),
-          _react2.default.createElement(
-            "div",
-            { className: "col-md-3" },
-            _react2.default.createElement(
-              "div",
-              { className: "item-box" },
-              _react2.default.createElement(
-                "div",
-                {
-                  className: "item-img",
-                  style: {
-                    background: "url(\"https://th.bing.com/th/id/OIP.iEYWe9MDKy2_Q7ydifeLuwHaHa?w=178&h=179&c=7&o=5&pid=1.7\")"
-                  }
-                },
-                _react2.default.createElement(
-                  "div",
-                  { className: "item-delete" },
-                  _react2.default.createElement("i", { className: "ti-close" })
-                )
-              ),
-              _react2.default.createElement(
-                "div",
-                { className: "title" },
-                "sneaker title"
-              ),
-              _react2.default.createElement(
-                "div",
-                { className: "quantity" },
-                _react2.default.createElement(
-                  "label",
-                  {
-                    htmlFor: "example-text-input",
-                    className: "col-htmlForm-label"
-                  },
-                  "Quantity"
-                ),
-                _react2.default.createElement(
-                  "h4",
-                  null,
-                  "4"
-                )
-              )
-            )
-          ),
+          this.showAllItems(),
           _react2.default.createElement(
             "div",
             { className: "col-md-3" },

@@ -57,6 +57,10 @@ export default class Popup extends Component {
       qtyBuying: this.state.form.qty,
     };
 
+    // let itemData={
+    //   id:this.state.form.product,
+    //   qty:this.state.form.qty
+    // }
     this.props.addItemToList(itemData);
   };
 
@@ -75,6 +79,7 @@ export default class Popup extends Component {
                   value={this.state.form.product}
                   onChange={this.change}
                 >
+                  <option value="none">Select a sneaker</option>
                   {this.showProducts()}
                 </select>
               </div>

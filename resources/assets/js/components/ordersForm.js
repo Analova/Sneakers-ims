@@ -107,6 +107,46 @@ class Layout extends Component {
     });
   };
 
+  showAllItems = () => {
+    // console.log("all items test");
+    return this.state.allItems.map((item, index) => (
+      <div key={item.productInfo.id} className="col-md-3">
+        <div className="item-box">
+          <div
+            className="item-img"
+            style={{
+              background: `url("${item.productInfo.img_url}")`,
+            }}
+          >
+            <div
+              className="item-delete"
+              onClick={this.removeItem.bind(null, index)}
+            >
+              <i className="ti-close"></i>
+            </div>
+          </div>
+          <div className="title">{item.productInfo.title}</div>
+          <div className="quantity">
+            <label htmlFor="example-text-input" className="col-htmlForm-label">
+              Quantity
+            </label>
+            <h4> {item.qtyBuying}</h4>
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
+  removeItem = (index) => {
+    let oldState = this.state;
+    let newState = update(oldState, {
+      allItems: {
+        $splice: [[index, 1]],
+      },
+    });
+    this.setState(newState);
+  };
+
   render() {
     return (
       <form action="/admin/products" method="post">
@@ -220,47 +260,24 @@ class Layout extends Component {
             />
           </div>
 
-          <option className="col-sm-12 col-md-6">
-            <label className="col-htmlForm-label">Payment Type</label>
+          <div className="col-sm-12 col-md-6">
+            <label className="col-form-label">Payment Type</label>
             <select
               className="custom-select"
               name="payment_type"
               value={this.state.form.payment_type}
               onChange={this.change}
             >
-              <option>Paypal</option>
-              <option value="{{brand.id}}">Credit card</option>
+              <option value="paypal">Paypal</option>
+              <option value="credit_card">Credit Card</option>
             </select>
-          </option>
+          </div>
         </div>
         <div className="row order-items">
           <div className="col-md-12">
             <h2>Order Items</h2>
           </div>
-          <div className="col-md-3">
-            <div className="item-box">
-              <div
-                className="item-img"
-                style={{
-                  background: `url("https://th.bing.com/th/id/OIP.iEYWe9MDKy2_Q7ydifeLuwHaHa?w=178&h=179&c=7&o=5&pid=1.7")`,
-                }}
-              >
-                <div className="item-delete">
-                  <i className="ti-close"></i>
-                </div>
-              </div>
-              <div className="title">sneaker title</div>
-              <div className="quantity">
-                <label
-                  htmlFor="example-text-input"
-                  className="col-htmlForm-label"
-                >
-                  Quantity
-                </label>
-                <h4>4</h4>
-              </div>
-            </div>
-          </div>
+          {this.showAllItems()}
           <div className="col-md-3">
             <div className="item-box">
               <div className="add-item-button" onClick={this.addNewBtn}>
