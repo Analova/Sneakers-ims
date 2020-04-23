@@ -48,14 +48,31 @@ var Popup = function (_Component) {
       var name = event.target.name;
       var value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
       var currentState = _this.state;
-      var newState = (0, _reactAddonsUpdate2.default)(currentState, {
-        form: {
-          $merge: _defineProperty({}, name, value)
-        }
-      });
+      var newState = "";
+      if (name == "product" && value != "none") {
+        var _$merge;
 
+        var productQty = _this.props.allProducts.filter(function (item) {
+          return item.id == value;
+        });
+        productQty = productQty[0].qty;
+        console.log(productQty);
+        newState = (0, _reactAddonsUpdate2.default)(currentState, {
+          form: {
+            $merge: (_$merge = {}, _defineProperty(_$merge, name, value), _defineProperty(_$merge, "productQty", productQty), _$merge)
+          }
+        }, function () {
+          return console.log(_this.state);
+        });
+      } else {
+        newState = (0, _reactAddonsUpdate2.default)(currentState, {
+          form: {
+            $merge: _defineProperty({}, name, value)
+          }
+        });
+      }
       _this.setState(newState, function () {
-        console.log(_this.state);
+        return console.log(_this.state);
       });
     };
 
@@ -91,9 +108,39 @@ var Popup = function (_Component) {
       _this.props.addItemToList(itemData);
     };
 
+    _this.showQty = function () {
+      var options = [];
+
+      var number = 0;
+      if (_this.state.form.productQty > 10) {
+        number = 11;
+      } else {
+        number = _this.state.form.productQty + 1;
+      }
+      if (_this.state.form.productQty !== 0 || _this.state.form.productQty != "none") {
+        for (var i = 1; i < number; i++) {
+          options.push(i);
+        }
+        return options.map(function (i) {
+          return _react2.default.createElement(
+            "option",
+            { key: i, value: "" + i },
+            i
+          );
+        });
+      } else {
+        return _react2.default.createElement(
+          "option",
+          { key: "no value", value: "" + i },
+          "Please choose a product that is available"
+        );
+      }
+    };
+
     _this.state = {
       form: {
         product: "",
+        productQty: 0,
         qty: 1
       }
     };
@@ -160,56 +207,7 @@ var Popup = function (_Component) {
                     value: this.state.qty,
                     onChange: this.change
                   },
-                  _react2.default.createElement(
-                    "option",
-                    { value: "1" },
-                    "1"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "2" },
-                    "2"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "3" },
-                    "3"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "4" },
-                    "4"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "5" },
-                    "5"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "6" },
-                    "6"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "7" },
-                    "7"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "8" },
-                    "8"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "9" },
-                    "9"
-                  ),
-                  _react2.default.createElement(
-                    "option",
-                    { value: "10" },
-                    "10"
-                  )
+                  this.showQty()
                 )
               ),
               _react2.default.createElement(
