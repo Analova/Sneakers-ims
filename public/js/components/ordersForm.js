@@ -354,10 +354,15 @@ var Layout = function (_Component) {
 
     _this.showAllItems = function () {
       // console.log("all items test");
+      var randomKey = function randomKey() {
+        var randomNumber = "_" + Math.random().toString(36).substr(2, 9);
+        randomNumber += 3;
+        return randomNumber;
+      };
       return _this.state.allItems.map(function (item, index) {
         return _react2.default.createElement(
           "div",
-          { key: item.productInfo.id, className: "col-md-3" },
+          { key: randomKey(), className: "col-md-3" },
           _react2.default.createElement(
             "div",
             { className: "item-box" },

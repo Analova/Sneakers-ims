@@ -110,8 +110,13 @@ class Layout extends Component {
 
   showAllItems = () => {
     // console.log("all items test");
+    let randomKey = function () {
+      let randomNumber = "_" + Math.random().toString(36).substr(2, 9);
+      randomNumber += 3;
+      return randomNumber;
+    };
     return this.state.allItems.map((item, index) => (
-      <div key={item.productInfo.id} className="col-md-3">
+      <div key={randomKey()} className="col-md-3">
         <div className="item-box">
           <div
             className="item-img"
