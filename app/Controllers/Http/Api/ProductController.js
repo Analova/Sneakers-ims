@@ -60,10 +60,30 @@ class ProductController {
             ${sanitize.escape(item.productInfo.size)},
             ${sanitize.escape(order_id)},
             ${parseInt(1)});
-          `
+            `
           )
             .then(() => {
               console.log("success");
+              /* --------------------- */
+              const updtateProduct = Database.raw(
+                `
+              Update products
+              SET qty = qty - ${item.qtyBuying}
+              WHERE id = ${item.productInfo.id}
+            `
+              )
+                .then(() => {
+                  console.log("successfully updated product");
+                })
+                .catch((error) => {
+                  console.log(error);
+                  return {
+                    status: "error",
+                    message: "Can't update product",
+                    error: error.sqlMessage,
+                  };
+                });
+              /* --------------------- */
             })
             .catch((error) => {
               console.log(error);
