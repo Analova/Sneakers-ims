@@ -496,12 +496,13 @@ var Layout = function (_Component) {
     key: "submitForm",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var csrf, submit;
+        var self, csrf, submit;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log("Submit form now!");
+                //console.log("Submit form now!");
+                self = window;
                 _context2.prev = 1;
                 csrf = document.getElementsByName("_csrf")[0].value;
                 _context2.next = 5;
@@ -514,7 +515,12 @@ var Layout = function (_Component) {
               case 5:
                 submit = _context2.sent;
 
-                console.log(submit);
+                if (submit.data.status == "success") {
+                  self.location.href = "/admin/orders";
+                } else {
+                  alert("\n            Status: " + submit.data.status + " \n\n            Message: " + submit.data.message + " \n\n            Error: " + submit.data.error + " \n\n            ");
+                }
+                //console.log(submit);
                 _context2.next = 14;
                 break;
 

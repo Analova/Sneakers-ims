@@ -87,6 +87,11 @@ class ProductController {
             })
             .catch((error) => {
               console.log(error);
+              return {
+                status: "error",
+                message: "Can't save item",
+                error: error.sqlMessage,
+              };
             });
         });
       });
