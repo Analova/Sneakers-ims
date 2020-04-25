@@ -5,22 +5,23 @@ const sanitize = require("sqlstring");
 class OrderController {
   async index({ view, request, response }) {
     try {
-      // let allProducts = await Database.raw(`
-      //   SELECT orders.id,
-      //   orders.title, orders.sku, brands.title as brand,
-      //   concat(users.f_name, ' ', users.l_name) as user,
-      //   orders.material, orders.qty, orders.size,
-      //   orders.user_id, orders.created_at
-      //   FROM orders
-      //   INNER JOIN brands
-      //   ON orders.brand_id = brands.id
-      //   INNER JOIN users
-      //   ON orders.user_id = users.id
-      //   ORDER BY created_at ASC
-      // `);
-      let allOders = " ";
+      let allOrders = await Database.raw(`
+      SELECT  orders.id,  concat(orders.f_name,"", orders.l_name) as customer, 
+      SUM(items.qty) as total_itmes, 
+      SUM(items.price * items.qty) as total_price,
+      concat(orders.state, " ", orders.country) as location, orders.payment_type,
+      concat(users.f_name, " ", users.l_name) as user
+      FROM orders
+      INNER JOIN items
+      ON orders.id = items.order_id
+      INNER JOIN users
+      ON orders.user_id = users.id
+      GROUP BY orders.id
+      `);
+      //console.log(allOrders);
+      allOrders = allOrders[0];
 
-      return view.render("admin/orders/all", { allOders });
+      return view.render("admin/orders/all", { allOrders });
     } catch (error) {
       console.log(error);
       return response.redirect("back");

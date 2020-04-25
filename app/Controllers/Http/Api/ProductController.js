@@ -7,7 +7,7 @@ class ProductController {
     try {
       let allProducts = await Database.raw(`
         SELECT products.id,
-        products.title, products.sku,products.description,products.img_url, brands.title as brand,
+        products.title, products.sku,products.price,products.description,products.img_url, brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
         products.material, products.qty, products.size, products.brand_id,
         products.user_id, products.created_at
@@ -49,10 +49,11 @@ class ProductController {
         post.allItems.map((item) => {
           const insertItem = Database.raw(
             `
-            INSERT INTO items (title, sku,  material, description, brand_id, qty, size, order_id, user_id)
+            INSERT INTO items (title, sku, price,   material, description, brand_id, qty, size, order_id, user_id)
             Values(${sanitize.escape(
               item.productInfo.title
             )}, ${sanitize.escape(item.productInfo.sku)},
+            ${sanitize.escape(item.productInfo.price)},
             ${sanitize.escape(item.productInfo.material)},
             ${sanitize.escape(item.productInfo.description)},
             ${sanitize.escape(item.productInfo.brand_id)},
