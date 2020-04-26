@@ -69,11 +69,15 @@ class OrderController {
     try {
       let order = await Database.raw(
         `
-        SELECT * FROM orders
-        WHERE id=${params.id}
+        SELECT orders.*,concat(users.f_name, " ", users.l_name) 
+        as user FROM orders
+        INNER JOIN users
+        ON orders.user_id=users.id
+        WHERE orders.id=${params.id}
           `
       );
       order = order[0][0];
+      //return order;
       let items = await Database.raw(
         `
         SELECT * FROM items
@@ -88,7 +92,7 @@ class OrderController {
         FROM orders
         INNER JOIN items
         ON orders.id = items.order_id
-        WHERE orders.id = 27
+        WHERE orders.id = ${params.id}
         GROUP BY orders.id;
       `);
       total_price = total_price[0][0].total_price;
