@@ -9,7 +9,7 @@ class ProductController {
         SELECT products.id,
         products.title, products.sku, brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
-        products.material, products.qty, products.size,
+        products.material, products.qty,products.price, products.size,
         products.user_id, products.created_at
         FROM products
         INNER JOIN brands
@@ -32,7 +32,7 @@ class ProductController {
       const post = request.post();
       await Database.raw(
         `INSERT INTO products (title, sku, img_url, material,description,
-       brand_id, qty,size,user_id)
+       brand_id, qty, price, size,user_id)
        Values(${sanitize.escape(post.title)}, 
        ${sanitize.escape(post.sku)},
         ${sanitize.escape(post.img_url)},
@@ -40,6 +40,7 @@ class ProductController {
        ${sanitize.escape(post.description)} ,
         ${sanitize.escape(post.brand_id)} ,
        ${sanitize.escape(post.qty)},
+         ${sanitize.escape(post.price)},
        ${sanitize.escape(post.size)}, 
        ${parseInt(1)})
     `
@@ -71,7 +72,8 @@ class ProductController {
         SELECT products.id, 
          products.title, products.sku,products.img_url,
          products.description,brands.title as brand,
-         concat( users.f_name, " " ,users.l_name) as user, products.material, products.qty, products.size,  
+         concat( users.f_name, " " ,users.l_name) as user,
+          products.material, products.qty,  products.price, products.size,  
         products.user_id, products.created_at  
         FROM products
         INNER JOIN brands
@@ -98,7 +100,8 @@ class ProductController {
         SELECT products.id, 
          products.title, products.sku,products.img_url,
          products.description,brands.title as brand,
-         concat( users.f_name, " " ,users.l_name) as user, products.material, products.qty, products.size,  
+         concat( users.f_name, " " ,users.l_name) as user, products.material, 
+         products.qty, products.price, products.size,  
         products.user_id, products.brand_id,
         products.created_at  
         FROM products
@@ -142,6 +145,7 @@ class ProductController {
         description=${sanitize.escape(post.description)} ,
         brand_id= ${sanitize.escape(post.brand_id)},
         qty= ${sanitize.escape(post.qty)},
+           qty= ${sanitize.escape(post.price)},
         size=${sanitize.escape(post.size)},
         user_id=${parseInt(1)}
         WHERE id=${id}

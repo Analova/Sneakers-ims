@@ -32,7 +32,8 @@ class ProductController {
       const post = request.post();
       const order = await Database.raw(
         `
-        INSERT INTO orders (f_name, l_name, address, address_2, city, state, country,  payment_type,  user_id)
+        INSERT INTO orders (f_name, l_name, address, address_2, city, state, country,  
+          payment_type, zipcode, user_id)
         Values(${sanitize.escape(post.form.f_name)}, ${sanitize.escape(
           post.form.l_name
         )},
@@ -42,6 +43,7 @@ class ProductController {
         ${sanitize.escape(post.form.state)},
         ${sanitize.escape(post.form.country)},
         ${sanitize.escape(post.form.payment_type)},
+         ${sanitize.escape(post.form.zipcode)},
         ${parseInt(1)});
       `
       ).then((order) => {
