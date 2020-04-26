@@ -67,27 +67,39 @@ class OrderController {
   async show({ view, request, response, params }) {
     //return params;
     try {
-      //   let order = await Database.raw(
-      //     `
-      //     SELECT orders.id,
-      //      orders.title, orders.sku,orders.img_url,
-      //      orders.description,brands.title as brand,
-      //      concat( users.f_name, " " ,users.l_name) as user, orders.material, orders.qty, orders.size,
-      //     orders.user_id, orders.created_at
-      //     FROM orders
-      //     INNER JOIN brands
-      //     ON orders.brand_id= brands.id
-      //     INNER JOIN users
-      //     ON orders.user_id= users.id
-      //     WHERE orders.id= ${params.id}
-      //     ORDER BY created_at ASC
-      //     LIMIT 1
-      // `
-      //   );
-      //   order = order[0][0];
-      let order = "";
-
-      return view.render("admin/orders/show", { order });
+      let order = await Database.raw(
+        `
+        SELECT * FROM orders
+        WHERE id=${params.id}
+          `
+      );
+      order = order[0][0];
+      let items = await Database.raw(
+        `
+        SELECT * FROM items
+        WHERE order_id=${params.id}
+          `
+      );
+      items = items[0];
+      let total_price = await Database.raw(`
+        SELECT orders.id,
+        SUM(items.qty) as total_items,
+        SUM(items.qty * items.price) as total_price
+        FROM orders
+        INNER JOIN items
+        ON orders.id = items.order_id
+        WHERE orders.id = 27
+        GROUP BY orders.id;
+      `);
+      total_price = total_price[0][0].total_price;
+      //return total_price;
+      let orderInfo = {
+        order,
+        items,
+        total_price,
+      };
+      //return orderInfo;
+      return view.render("admin/orders/show", { orderInfo });
     } catch (error) {
       console.log(error);
       return response.redirect("back");

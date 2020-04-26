@@ -23,13 +23,13 @@
           </div>
           <div class="col-md-6">
             <label>
-              <span for="">First Name:</span> Jane
+              <span for="">First Name:</span> {{orderInfo .order.f_name}}
             </label>
 
           </div>
           <div class="col-md-6">
             <label for="">
-              <span for="">Lats Name:</span> Lorenz
+              <span for="">Lats Name:</span> {{orderInfo .order.l_name}}
             </label>
           </div>
           <hr>
@@ -43,36 +43,36 @@
           </div>
           <div class="col-md-6">
             <label for="">
-              <span for="">Address:</span> Rupprecht strasse 19
+              <span for="">Address:</span> {{orderInfo .order.address}}
             </label>
 
           </div>
           <div class="col-md-6">
             <label for="">
-              <span for="">Address #2:</span> Wurst strasse 20
+              <span for="">Address #2:</span> {{orderInfo .order.address_2}}
             </label>
           </div>
           <div class="col-md-3">
             <label for="">
-              <span for="">City:</span> Berlin
-            </label>
-
-          </div>
-          <div class="col-md-3">
-            <label for="">
-              <span for="">State:</span> NA
+              <span for="">City:</span> {{orderInfo .order.city}}
             </label>
 
           </div>
           <div class="col-md-3">
             <label for="">
-              <span for="">Zipcode:</span> 20173
+              <span for="">State:</span> {{orderInfo .order.state}}
             </label>
 
           </div>
           <div class="col-md-3">
             <label for="">
-              <span for="">Country:</span> Germany
+              <span for="">Zipcode:</span> 10137
+            </label>
+
+          </div>
+          <div class="col-md-3">
+            <label for="">
+              <span for="">Country:</span> {{orderInfo .order.country}}
             </label>
 
           </div>
@@ -84,19 +84,19 @@
           </div>
           <div class="col-md-4">
             <label for="">
-              <span for="">Payment Type:</span> paypal
+              <span for="">Payment Type:</span> {{orderInfo .order.payment_type}}
             </label>
 
           </div>
           <div class="col-md-4">
             <label for="">
-              <span for="">Created By:</span> Germany
+              <span for="">Created By:</span> Jane Wuh
             </label>
 
           </div>
           <div class="col-md-4">
             <label for="">
-              <span for="">Date:</span> Germany
+              <span for="">Date:</span> {{orderInfo .order.created_at}}
             </label>
 
           </div>
@@ -113,8 +113,8 @@
                   <thead class="text-uppercase bg-primary">
                     <tr class="text-white">
                       <th scope="col">ID</th>
+                       <th scope="col">Image</th>
                       <th scope="col">Title</th>
-                      <th scope="col">Image</th>
                       <th scope="col">Sku</th>
                       <th scope="col">Quantity</th>
                       <th scope="col">Price</th>
@@ -122,13 +122,17 @@
                     </tr>
                   </thead>
                   <tbody>
+                     @each(item in orderInfo.items)
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>09 / 07 / 2018</td>
-                      <td>$120</td>
-                      <td><i class="ti-trash"></i></td>
+                    <th scope="row">{{item.id}}</th>
+                      <td><img src="{{item.id}}"
+                        width="200px" alt=""></td>
+                      <td>{{item.title}}</td>
+                      <td>{{item.sku}}</td>
+                      <td>{{item.qty}}</td>
+                       <td>{{item.price}}</td>
                     </tr>
+                      @endeach
                   </tbody>
                 </table>
               </div>
@@ -136,6 +140,16 @@
 
 
           </div>
+        </div>
+
+        <div class="section row " style="text-align:right" >
+          <div class="col-md-12">
+               <h2 >Total Price</h2>
+          </div>
+          <div class="col-md-12" style="text-align:right">
+            <h3>$ {{orderInfo.total_price}}</h3>
+          </div>
+         
         </div>
 
       </div>
