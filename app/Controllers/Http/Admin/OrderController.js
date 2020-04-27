@@ -28,29 +28,89 @@ class OrderController {
     }
   }
 
-  async store({ request, response, params }) {
+  async store({ request, response }) {
     try {
       const post = request.post();
-      await Database.raw(
-        `INSERT INTO orders (title, sku, img_url, material,description,
-       brand_id, qty,size,user_id)
-       Values(${sanitize.escape(post.title)}, 
-       ${sanitize.escape(post.sku)},
-        ${sanitize.escape(post.img_url)},
-       ${sanitize.escape(post.material)},
-       ${sanitize.escape(post.description)} ,
-        ${sanitize.escape(post.brand_id)} ,
-       ${sanitize.escape(post.qty)},
-       ${sanitize.escape(post.size)}, 
-       ${parseInt(1)})
-    `
-      );
-      return response.redirect("/admin/orders");
+      const order = await Database.raw(
+        `
+        INSERT INTO orders (f_name, l_name, address, address_2, city, state, country,  
+          payment_type, zipcode, user_id)
+        Values(${sanitize.escape(post.form.f_name)}, ${sanitize.escape(
+          post.form.l_name
+        )},
+        ${sanitize.escape(post.form.address)},
+        ${sanitize.escape(post.form.address_2)},
+        ${sanitize.escape(post.form.city)},
+        ${sanitize.escape(post.form.state)},
+        ${sanitize.escape(post.form.country)},
+        ${sanitize.escape(post.form.payment_type)},
+         ${sanitize.escape(post.form.zipcode)},
+        ${parseInt(1)});
+      `
+      ).then((order) => {
+        const order_id = order[0].insertId;
+        post.allItems.map((item) => {
+          const insertItem = Database.raw(
+            `
+            INSERT INTO items (title, sku, price,   material, description, brand_id, qty, size, order_id, user_id)
+            Values(${sanitize.escape(
+              item.productInfo.title
+            )}, ${sanitize.escape(item.productInfo.sku)},
+            ${sanitize.escape(item.productInfo.price)},
+            ${sanitize.escape(item.productInfo.material)},
+            ${sanitize.escape(item.productInfo.description)},
+            ${sanitize.escape(item.productInfo.brand_id)},
+            ${sanitize.escape(item.qtyBuying)},
+            ${sanitize.escape(item.productInfo.size)},
+            ${sanitize.escape(order_id)},
+            ${parseInt(1)});
+            `
+          )
+            .then(() => {
+              console.log("success");
+              /* --------------------- */
+              const updtateProduct = Database.raw(
+                `
+              Update products
+              SET qty = qty - ${item.qtyBuying}
+              WHERE id = ${item.productInfo.id}
+            `
+              )
+                .then(() => {
+                  console.log("successfully updated product");
+                })
+                .catch((error) => {
+                  console.log(error);
+                  return {
+                    status: "error",
+                    message: "Can't update product",
+                    error: error.sqlMessage,
+                  };
+                });
+              /* --------------------- */
+            })
+            .catch((error) => {
+              console.log(error);
+              return {
+                status: "error",
+                message: "Can't save item",
+                error: error.sqlMessage,
+              };
+            });
+        });
+      });
+
+      return {
+        status: "success",
+        message: "Saved Order",
+      };
     } catch (error) {
       console.log(error);
-      return response.redirect("back");
-      //  `<h1 style="color:red">There was an error<h1>
-      // <h3>${error.sqlMessage}</h3>`;
+      return {
+        status: "error",
+        message: "Can't save order",
+        error: error.sqlMessage,
+      };
     }
   }
 
@@ -80,11 +140,14 @@ class OrderController {
       //return order;
       let items = await Database.raw(
         `
-        SELECT * FROM items
+        SELECT *, products.img_url FROM items
+        INNER JOIN products
+        ON items.title = products.title
         WHERE order_id=${params.id}
           `
       );
       items = items[0];
+      //return items;
       let total_price = await Database.raw(`
         SELECT orders.id,
         SUM(items.qty) as total_items,
