@@ -238,11 +238,15 @@ class OrderController {
 
   async delete({ request, response, params }) {
     try {
-      const id = params.id;
-      const post = request.post();
+      const order_id = params.id;
+      await Database.raw(`
+       DELETE FROM items
+        WHERE items.order_id=${order_id}
+
+      `);
       await Database.raw(`
        DELETE FROM orders
-        WHERE id=${id}
+        WHERE orders.id=${order_id}
 
       `);
 

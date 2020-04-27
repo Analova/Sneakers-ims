@@ -6,7 +6,7 @@
   <ul class="breadcrumbs pull-left">
     <li><a href="/admin">Dashboard</a></li>
     <li><a href="/admin/orders">All Products</a></li>
-    <li><span> {{order.title}} </span></li>
+    <li><span> {{orderInfo.order.id}} </span></li>
   </ul>
 </div>
 @endsection
@@ -156,11 +156,11 @@
     </div>
   </div>
   <div class="col-md-3  mt-5">
-    <a href="/admin/orders/{{order.id}}/edit" class="btn btn-primary btn-lg btn-block">
+    <a href="/admin/orders/{{orderInfo.order.id}}/edit" class="btn btn-primary btn-lg btn-block">
       Edit
       <i class="ti-pencil-alt"></i>
     </a>
-    <a href="/admin/orders/{{order.id}}/delete" class="btn btn-danger btn-lg btn-block"
+    <a href="/admin/orders/{{orderInfo.order.id}}/delete" class="btn btn-danger btn-lg btn-block"
       onclick="return  confirm('are you sure?')">
       Delete
       <i class="ti-trash"></i>
