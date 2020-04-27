@@ -6,7 +6,7 @@ class OrderController {
   async index({ view, request, response }) {
     try {
       let allOrders = await Database.raw(`
-      SELECT  orders.id,  concat(orders.f_name,"", orders.l_name) as customer, 
+      SELECT  orders.id,  concat(orders.f_name,"  ", orders.l_name) as customer, 
       SUM(items.qty) as total_itmes, 
       SUM(items.price * items.qty) as total_price,
       concat(orders.state, " ", orders.country) as location, orders.payment_type,
