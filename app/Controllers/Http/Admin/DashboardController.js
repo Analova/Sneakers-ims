@@ -1,21 +1,40 @@
 "use strict";
+const Database = use("Database");
+const sanitize = require("sqlstring");
 
 class DashboardController {
   async index({ view, request, response }) {
     try {
-      //   let allBrands = await Database.raw(`
-      //     SELECT brands.id, brands.title, brands.img_url, brands.user_id,
-      //     concat(users.f_name, " " ,users.l_name ) as user,
-      //     brands.created_at, brands.updated_at
-      //     FROM brands
-      //     INNER JOIN users
-      //     ON brands.user_id = users.id
-      //     ORDER BY brands.title ASC
-      //   `);
-      //   allBrands = allBrands[0];
-      let allBrands = "";
+      let data = {
+        topSalesMonthly: {
+          months: [],
+          total_items: [],
+          total_earned: [],
+        },
+      };
+      let getMonthSales = await Database.raw(`
+          SELECT
+		    monthname(any_value(orders.created_at)) as month,
+        SUM(items.qty) as total_items,
+        SUM(items.price * items.qty) as total_price
+        FROM orders
+        INNER JOIN items
+        ON orders.id = items.order_id
+        WHERE YEAR(orders.created_at) = YEAR(CURDATE())
+        GROUP BY MONTH(orders.created_at)
+        `);
+      getMonthSales = getMonthSales[0];
+      getMonthSales.map((item) => {
+        data.topSalesMonthly.months.push(item.month);
+        data.topSalesMonthly.total_items.push(item.total_items);
+        data.topSalesMonthly.total_earned.push(item.total_price);
+      });
 
-      return view.render("admin/dashboard/index", { allBrands });
+      //return data;
+
+      //let getMonthSales = "";
+
+      return view.render("admin/dashboard/index", { data });
     } catch (error) {
       console.log(error);
       return response.redirect("back");
@@ -26,14 +45,14 @@ class DashboardController {
     try {
       const post = request.post();
       await Database.raw(
-        `INSERT INTO brands (title,  img_url , description,user_id)
+        `INSERT INTO dashboard (title,  img_url , description,user_id)
        Values(${sanitize.escape(post.title)}, 
         ${sanitize.escape(post.img_url)},
        ${sanitize.escape(post.description)} ,
        ${parseInt(1)})
     `
       );
-      return response.redirect("/admin/brands");
+      return response.redirect("/admin/dashboard");
     } catch (error) {
       console.log(error);
       return response.redirect("back");
@@ -43,25 +62,25 @@ class DashboardController {
   }
 
   create({ view, request, response }) {
-    return view.render("admin/brands/create");
+    return view.render("admin/dashboard/create");
   }
 
   async show({ view, request, response, params }) {
     try {
       let brand = await Database.raw(`
-        SELECT brands.id,
-        brands.title, brands.img_url, brands.description,
+        SELECT dashboard.id,
+        dashboard.title, dashboard.img_url, dashboard.description,
         concat(users.f_name, ' ', users.l_name) as user,
-        brands.user_id, brands.created_at, brands.updated_at
-        FROM brands
+        dashboard.user_id, dashboard.created_at, dashboard.updated_at
+        FROM dashboard
         INNER JOIN users
-        ON brands.user_id = users.id
-        WHERE brands.id = ${params.id}
+        ON dashboard.user_id = users.id
+        WHERE dashboard.id = ${params.id}
         LIMIT 1
       `);
       brand = brand[0][0];
 
-      return view.render("admin/brands/show", { brand });
+      return view.render("admin/dashboard/show", { brand });
     } catch (error) {
       console.log(error);
       return response.redirect("back");
@@ -70,24 +89,24 @@ class DashboardController {
 
   async edit({ view, request, response, params }) {
     try {
-      let brands = await Database.raw(
+      let dashboard = await Database.raw(
         `
-        SELECT brands.id, 
-         brands.title,brands.img_url,
-         brands.description,
+        SELECT dashboard.id, 
+         dashboard.title,dashboard.img_url,
+         dashboard.description,
          concat( users.f_name, " " ,users.l_name) as user,  
-        brands.user_id, brands.created_at ,  brands.updated_at  
-        FROM brands
+        dashboard.user_id, dashboard.created_at ,  dashboard.updated_at  
+        FROM dashboard
         INNER JOIN users
-        ON brands.user_id= users.id 
-        WHERE brands.id= ${params.id}
+        ON dashboard.user_id= users.id 
+        WHERE dashboard.id= ${params.id}
         ORDER BY created_at ASC
         LIMIT 1
     `
       );
-      brands = brands[0][0];
+      dashboard = dashboard[0][0];
 
-      return view.render("admin/brands/edit", { brands });
+      return view.render("admin/dashboard/edit", { dashboard });
     } catch (error) {
       console.log(error);
       return response.redirect("back");
@@ -99,7 +118,7 @@ class DashboardController {
       const id = params.id;
       const post = request.post();
       await Database.raw(`
-        UPDATE brands
+        UPDATE dashboard
         SET
         title = ${sanitize.escape(post.title)},
         img_url = ${sanitize.escape(post.img_url)},
@@ -107,7 +126,7 @@ class DashboardController {
         WHERE id = ${id}
       `);
 
-      return response.redirect(`/admin/brands/${id}`);
+      return response.redirect(`/admin/dashboard/${id}`);
     } catch (error) {
       console.log(error);
       return response.redirect("back");
@@ -118,11 +137,11 @@ class DashboardController {
     try {
       const id = params.id;
       await Database.raw(`
-        DELETE FROM brands
+        DELETE FROM dashboard
         WHERE id = ${id}
       `);
 
-      return response.redirect(`/admin/brands`);
+      return response.redirect(`/admin/dashboard`);
     } catch (error) {
       console.log(error);
       return response.redirect("back");
